@@ -1,0 +1,181 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>Sent data to server</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<style type="text/css">
+			body { width:100%; padding:0; margin:0; height:0; font-size: 16px; }
+			.row{ display: inline-block; width: 100%;line-height: 32px;}
+			.row .lbl { float:left; margin-left: 30px; width: 110px;}
+			.borderBottom { border-bottom: 1px solid #B4B4B4; }
+			.row .txt { float:left; margin-top: 3px; }
+			.row .btn { float:right;margin-right: 20px; }
+			.title {text-align: center;}
+
+			.nav {text-align: center; }
+			.nav .btnCancel { float:left;text-decoration: none; color: #177FEE;margin-left: 20px; font-weight: bold; width: 85px; }
+			.nav .btnSave { float:right;text-decoration: none; color: #177FEE;margin-right: 20px; font-weight: bold; width: 85px; text-align: right;}
+			.nav .subTitle { font-size: 20px; font-weight: bold; }
+
+			.space { background-color: #E7E7E7; height: 28px; border-top: 1px solid #B4B4B4; border-bottom: 1px solid #B4B4B4; }
+
+			.name { background-color: #E7E7E7; height: 28px; }
+
+			input[type=text], input[type=password] {
+			    font-size: 18px;
+			    height: 26px;
+			    width: 150px;
+			    border: none;
+			    /*border-left: none;
+			    border-right: none;
+			    border-top: none;
+			    border-bottom: 1 solid #177FEE;*/
+			}
+
+			@media only screen and (min-width : 1000px) {
+				
+			}
+			/* Nomarl resolution scream */
+			@media only screen and (min-width : 768px) and (max-width : 999px) {
+				
+			}
+
+			/* Small resolution scream */
+			@media only screen and (min-width : 320px) and (max-width : 767px) {
+				
+			}
+
+			/* Tindy resolution scream */
+			@media only screen and (max-width : 319px) {
+				
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="row title">
+			ネットワ按続の入力
+		</div>
+		<div class="row nav">
+			<a href="#" class="btnSave">接続</a>
+			<a href="#" class="btnCancel">キャンセル</a>
+			<span class="subTitle">Wifiの設定</span>
+		</div>
+		<div class="row space">
+			&nbsp;
+		</div>
+		<div class="row">
+			<div class="lbl" for="name">名前</div>
+			<input id="name" name="name" class="txt" type="text" value="" />
+		</div>
+		<div class="row space">
+			&nbsp;
+		</div>
+		<div class="row borderBottom">
+			<a class="btn"> WPA2 &nbsp; > </a>
+			<div class="lbl" for="user">セキュリティ</div>
+			<input id="user" name="user" class="txt" type="text" value="" />
+		</div>
+		<div class="row borderBottom">
+			<div class="lbl" for="password">パスワード</div>
+			<input id="password" name="password" class="txt" type="password" value="" />
+		</div>
+		<div class="row borderBottom">
+			<div class="lbl" for="ip">IP Address</div>
+			<input id="ip" name="ip" class="txt" type="text" value="" />
+		</div>
+		<div class="row borderBottom">
+			<div class="lbl" for="netmask">NetMask</div>
+			<input id="netmask" name="netmask" class="txt" type="text" value="" />
+		</div>
+		<div class="row borderBottom">
+			<div class="lbl" for="gateway">Gateway</div>
+			<input id="gateway" name="gateway" class="txt" type="text" value="" />
+		</div>
+		<div class="row borderBottom">
+			<div class="lbl" for="dns">DNS</div>
+			<input id="dns" name="dns" class="txt" type="text" value="" />
+		</div>
+	</body>
+	<script type="text/javascript">
+		var pattern = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
+		var x = 46;
+
+		var addressInvalid = true;
+		var dnsInvalid = true;
+
+		function sendData(){
+			if (addressInvalid == false || dnsInvalid == false){
+				alert('Enter value valid format, please!');
+				return false;
+			}
+			jsAndroiInterface.getData(document.getElementById("serverAddress").value + '',
+				                      document.getElementById("dns").value + '');
+			
+			return false;
+		}
+
+		function calc()
+		{
+		  if (document.getElementById('save').checked) 
+		  {
+		      
+		  } else {
+		      
+		  }
+		}
+
+		function __keypress(e){
+			console.log('__keypress');
+			if (e.which != 8 && e.which != 0 && e.which != x && (e.which < 48 || e.which > 57)) {
+		        console.log(e.which);
+		        e.preventDefault();
+		        return false;
+		    }
+		}
+
+		function __keyup(e, id){
+			console.log('__keyup');
+			var this1 = document.getElementById(id);
+		    if (!pattern.test((this1.value + ''))) {
+		    	if (id == 'serverAddress'){
+		    		addressInvalid = true;
+		    	} else if (id == 'dns'){
+		    		dnsInvalid = true;
+		    	}
+		        while ((this1.value + '').indexOf("..") !== -1) {
+		            this1.value = (this1.value + '').replace('..', '.');
+		        }
+		        x = 46;
+		    } else {
+		        x = 0;
+		        var lastChar = (this1.value + '').substr((this1.value + '').length - 1);
+		        if (lastChar == '.') {
+		            this1.value = ((this1.value + '').slice(0, -1));
+		        }
+		        var ip = this1.value.split('.');
+		        if (ip.length == 4) {
+		        	if (id == 'serverAddress'){
+			    		addressInvalid = false;
+			    	} else if (id == 'dns'){
+			    		dnsInvalid = false;
+			    	}
+		            console.log('Valid IP');
+		        }
+		    }
+
+		    var str = '';
+		    if (addressInvalid){
+		    	str = str + 'Server address is not Valid IP';
+		    }
+		    if (dnsInvalid){
+		    	if (str != ''){
+		    		str = str + '<br/>&nbsp';
+		    	}
+		    	str = str + 'DNS is not Valid IP';
+		    }
+		    document.getElementById("error").innerHTML = '&nbsp' + str;
+		}
+	</script>
+</html>

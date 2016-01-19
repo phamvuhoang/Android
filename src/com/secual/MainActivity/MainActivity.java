@@ -107,6 +107,8 @@ public class MainActivity extends Activity {
 			
 			Toast.makeText(MainActivity.this, rst, Toast.LENGTH_LONG).show();
 			
+			constants = new Constants();
+			webView.loadUrl(constants.getWifiUrl());
 			return rst;
 		}
 	}
