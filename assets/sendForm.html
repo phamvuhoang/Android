@@ -60,7 +60,7 @@
 		</div>
 	</body>
 	<script type="text/javascript">
-		var pattern = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
+		var pattern = /^\d+$/;
 		var error = '';
 
 		function sendData(){
@@ -93,9 +93,30 @@
 		}
 
 		function __checkFormatIP(val, name){
-			if (!pattern.test((val + ''))) {
-		    	return name + ' is not Valid IP.';
-		    }
+			var arr = val.value.split('.');
+			var intV = 0;
+			var rst = '';
+			if (arr.length != 4){
+				return name + ' is not Valid IP.';
+			}
+			for (var cnt = 0; cnt < arr.length; cnt++){
+				if (arr[cnt] == '' || arr[cnt] == null || arr[cnt] == 'undefined'){
+					return name + ' is not Valid IP.';
+				}
+				if (!pattern.test((arr[cnt] + ''))) {
+		    		return name + ' is not Valid IP.';
+		    	}
+		    	intV = parseInt(arr[cnt]);
+		    	if (intV < 0 || intV > 255){
+		    		return name + ' is not Valid IP.';
+		    	}
+
+		    	rst = rst + (cnt == arr.length - 1 ? intV + '' : intV + '.');
+		    	if (rst == "0.0.0.0"){
+		    		return name + ' is not Valid IP.';
+		    	}
+			}
+			val.value = rst;
 			return '';
 		}
 
@@ -109,7 +130,7 @@
 				if (error == '') error = tmp;
 				str = str + tmp + '<br/>';
 			} else {
-				tmp = __checkFormatIP(address.value, 'Server address');
+				tmp = __checkFormatIP(address, 'Server address');
 				if (tmp != ''){
 					if (error == '') error = tmp;
 					str = str + tmp + '<br/>';
@@ -122,7 +143,7 @@
 				str = str + tmp + '<br/>';
 				
 			} else {
-				tmp = __checkFormatIP(dns.value, 'DNS');
+				tmp = __checkFormatIP(dns, 'DNS');
 				if (tmp != ''){
 					if (error == '') error = tmp;
 					str = str + tmp + '<br/>';
