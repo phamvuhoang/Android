@@ -7,10 +7,10 @@
 		<style type="text/css">
 			body { width:100%; padding:0; margin:0; height:0; font-size: 16px; }
 			.row{ display: inline-block; width: 100%;line-height: 32px;}
-			.row .lbl { float:left; margin-left: 30px; width: 110px;}
+			.row .lbl { float:left; margin-left: 30px; width: 100px;}
 			.borderBottom { border-bottom: 1px solid #B4B4B4; }
-			.row .txt { float:left; margin-top: 3px; }
-			.row .btn { float:right;margin-right: 20px; }
+			.row .txt { float:left; margin-top: 3px; width: 109px;}
+			.row .btn { float:right;margin-right: 20px; width: 65px; }
 			.title {text-align: center;}
 
 			.nav {text-align: center; }
@@ -25,7 +25,6 @@
 			input[type=text], input[type=password] {
 			    font-size: 18px;
 			    height: 26px;
-			    width: 150px;
 			    border: none;
 			    /*border-left: none;
 			    border-right: none;
@@ -37,12 +36,17 @@
 				
 			}
 			/* Nomarl resolution scream */
-			@media only screen and (min-width : 768px) and (max-width : 999px) {
+			@media only screen and (min-width : 800px) and (max-width : 999px) {
 				
 			}
 
 			/* Small resolution scream */
-			@media only screen and (min-width : 320px) and (max-width : 767px) {
+			@media only screen and (min-width : 480px) and (max-width : 799px) {
+				
+			}
+
+			/* Small resolution scream */
+			@media only screen and (min-width : 320px) and (max-width : 479px) {
 				
 			}
 
@@ -53,9 +57,9 @@
 			
 		</style>
 	</head>
-	<body>
+	<body onload="resizeCrt()" onresize="resizeCrt()">
 		<div class="row title">
-			ネットワ按続の入力
+			ネットワーク情報の入力
 		</div>
 		<div class="row nav">
 			<a href="#" class="btnSave">接続</a>
@@ -176,6 +180,20 @@
 		    	str = str + 'DNS is not Valid IP';
 		    }
 		    document.getElementById("error").innerHTML = '&nbsp' + str;
+		}
+		function resizeCrt(){
+			var w = window.innerWidth;
+			var val = w - 130 - 85 - 5;
+			if (val > 300){
+				val = 300;
+			}
+			document.getElementById("name").style.width = val + 'px';
+			document.getElementById("user").style.width = val + 'px';
+			document.getElementById("password").style.width = val + 'px';
+			document.getElementById("ip").style.width = val + 'px';
+			document.getElementById("netmask").style.width = val + 'px';
+			document.getElementById("gateway").style.width = val + 'px';
+			document.getElementById("dns").style.width = val + 'px';
 		}
 	</script>
 </html>
