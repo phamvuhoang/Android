@@ -106,21 +106,21 @@ public class MainActivity extends Activity {
             
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            	try{
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                        progressDialog = null;
-                    }
-                    }catch(Exception exception){
-                        exception.printStackTrace();
-                    }
+//            	try{
+//	                if (progressDialog.isShowing()) {
+//	                    progressDialog.dismiss();
+//	                    progressDialog = null;
+//	                }
+//                }catch(Exception exception){
+//                    exception.printStackTrace();
+//                }
             }
         });
           
          // Javascript inabled on webview 
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setRenderPriority(RenderPriority.HIGH);
-        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webView.getSettings().setAppCacheEnabled(true);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
         
         if (Build.VERSION.SDK_INT >= 19) {
             webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
