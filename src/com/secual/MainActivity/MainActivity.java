@@ -103,7 +103,18 @@ public class MainActivity extends Activity {
                 }
                 view.clearCache(true);
             }
-             
+            
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            	try{
+                    if (progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
+                    }catch(Exception exception){
+                        exception.printStackTrace();
+                    }
+            }
         });
           
          // Javascript inabled on webview 
