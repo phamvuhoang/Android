@@ -2,6 +2,7 @@ package com.secual.MainActivity;
 
 import com.secual.bos.Constants;
 import com.secual.bos.SecualWebViewClient;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
+	private static final String ADD_PARAM = "jwt=xxxxxxx";
 	
 	private WebView webView;
 	private Constants constants;
@@ -23,30 +25,57 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
 //		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //	            WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_main);
+		
 		
 		constants = new Constants();
 		URL = constants.geturl();
 		//Get webview 
 		webView = (WebView) findViewById(R.id.webview);
-		startWebView(URL);
 		
+		if (savedInstanceState != null){
+			webView.restoreState(savedInstanceState);
+		}
+		
+		startWebView(URL);
 	}
 	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+	    webView.saveState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState){
+		super.onRestoreInstanceState(savedInstanceState);
+	    
+	    webView.restoreState(savedInstanceState);
+	}
+	  
 	private void startWebView(String url) {
         
         //Create new webview Client to show progress dialog
         //When opening a url or click on link
-         
         webView.setWebViewClient(new SecualWebViewClient(this, webView) {     
             ProgressDialog progressDialog;
           
             //If you will not use this method url links are opeen in new brower not in webview
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {             
-                view.loadUrl(url);
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {   
+            	if (url.startsWith("http")) {
+            		if (url.indexOf(ADD_PARAM) > -1){
+            			view.loadUrl(url);
+            		} else if (url.indexOf("?") > -1){
+	            		view.loadUrl(url + "&" + ADD_PARAM);
+	            	} else {
+	            		view.loadUrl(url + "?" + ADD_PARAM);
+	            	}
+                } else{
+                	view.loadUrl(url);
+                }
                 return true;
             }
         
@@ -83,11 +112,6 @@ public class MainActivity extends Activity {
         webView.setScrollbarFadingEnabled(false);
         webView.getSettings().setBuiltInZoomControls(true);
         */
-         
-        /*
-         String summary = "<html><body>You scored <b>192</b> points.</body></html>";
-         webview.loadData(summary, "text/html", null);
-         */
         
         webView.addJavascriptInterface(new JavascriptBridge(), "jsAndroiInterface");
         
@@ -95,7 +119,6 @@ public class MainActivity extends Activity {
         
         //Load url in webview
         webView.loadUrl(url);
-          
           
     }
 	

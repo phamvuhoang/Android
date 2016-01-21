@@ -11,13 +11,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class SecualWebViewClient extends WebViewClient{
-	private String TAG = "FTVNavbarWebClient";
+	private String TAG = "SecualWebViewClient";
 
     //String hash = "jio00f7z";
     Activity activity = null;
     WebView webView;
     public static final int REQUEST_CODE = 0;
     public static final int QR_REQUEST_CODE = 1;
+    
+    
 
     private Hashtable<String, String> attributeSet = new Hashtable<String, String>();
 
