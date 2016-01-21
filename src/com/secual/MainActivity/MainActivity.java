@@ -5,11 +5,15 @@ import com.secual.bos.SecualWebViewClient;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.widget.Toast;
 
@@ -97,13 +101,23 @@ public class MainActivity extends Activity {
                 }catch(Exception exception){
                     exception.printStackTrace();
                 }
+                view.clearCache(true);
             }
              
         });
           
          // Javascript inabled on webview 
         webView.getSettings().setJavaScriptEnabled(true);
-         
+        webView.getSettings().setRenderPriority(RenderPriority.HIGH);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        
+        if (Build.VERSION.SDK_INT >= 19) {
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }       
+        else {
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+        
         // Other webview options
         /*
         webView.getSettings().setLoadWithOverviewMode(true);
